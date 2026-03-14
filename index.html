@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en" x-data="themeApp()" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiyunni | Digital Artist :3</title>
+    <meta name="theme-color" content="#0a0a0a">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="https://i.pinimg.com/1200x/a8/61/88/a861884fd118525ed9a744962aa943e8.jpg">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandPink: '#ff3dbb',
+                        darkBg: '#0a0a0a',
+                        cardDark: '#161616',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; cursor: none; }
+        [x-cloak] { display: none !important; }
+
+        /* ── THEME TRANSITION ── */
+        *, *::before, *::after {
+            transition: background-color 0.5s ease, border-color 0.5s ease, color 0.3s ease;
+        }
+        /* but NOT transform / opacity (would break animations) */
+        .no-theme-transition {
+            transition: transform 0.3s ease, opacity 0.3s ease !important;
+        }
+
+        /* ── RIPPLE ── */
+        #theme-ripple {
+            position: fixed;
+            border-radius: 50%;
+            transform: scale(0);
+            pointer-events: none;
+            z-index: 9999;
+            width: 40px; height: 40px;
+            margin-left: -20px; margin-top: -20px;
+        }
+        #theme-ripple.ripple-dark {
+            background: #0a0a0a;
+            animation: ripple-out 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        #theme-ripple.ripple-light {
+            background: #fdf4ff;
+            animation: ripple-out 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes ripple-out {
+            0%   { transform: scale(0);   opacity: 1; }
+            100% { transform: scale(80);  opacity: 1; }
+        }
+
+        /* ── TOGGLE BUTTON ── */
+        .theme-toggle {
+            position: relative;
+            width: 64px; height: 34px;
+            border-radius: 34px;
+            cursor: pointer; border: none; outline: none;
+            transition: background 0.4s ease;
+            overflow: visible;
+        }
+        .dark .theme-toggle  { background: #1e1b2e; box-shadow: 0 0 0 1.5px rgba(255,61,187,0.3); }
+        :not(.dark) .theme-toggle { background: #ffe5f5; box-shadow: 0 0 0 1.5px rgba(255,61,187,0.3); }
+
+        .toggle-thumb {
+            position: absolute;
+            top: 4px; left: 4px;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+            z-index: 2;
+        }
+        .dark .toggle-thumb {
+            transform: translateX(30px);
+            background: #2d1b4e;
+            box-shadow: 0 0 12px rgba(201,160,255,0.5);
+        }
+        :not(.dark) .toggle-thumb {
+            transform: translateX(0);
+            background: #fff;
+            box-shadow: 0 0 12px rgba(255,200,0,0.5);
+        }
+
+        /* Stars inside toggle (dark mode) */
+        .toggle-stars {
+            position: absolute; inset: 0; border-radius: 34px; overflow: hidden; pointer-events: none;
+        }
+        .toggle-star {
+            position: absolute; background: white; border-radius: 50%;
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .dark .toggle-star { opacity: 0.8; }
+
+        /* Sun rays (light mode) */
+        .sun-ray {
+            position: absolute;
+            width: 2px; height: 6px;
+            background: #ffb800;
+            border-radius: 2px;
+            top: 50%; left: 50%;
+            transform-origin: 50% 20px;
+            opacity: 0; transition: opacity 0.3s 0.1s;
+        }
+        :not(.dark) .sun-ray { opacity: 1; }
+
+        /* ── ICON SPIN ── */
+        .icon-spin { animation: spin-once 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes spin-once {
+            from { transform: rotate(-180deg) scale(0.5); }
+            to   { transform: rotate(0deg) scale(1); }
+        }
+
+        /* ── STAR BURST on toggle ── */
+        .star-burst {
+            position: fixed; pointer-events: none; z-index: 10000;
+            font-size: 1rem;
+            animation: star-burst-anim 0.7s ease-out forwards;
+        }
+        @keyframes star-burst-anim {
+            0%   { opacity:1; transform: translate(0,0) scale(1) rotate(0deg); }
+            100% { opacity:0; transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg); }
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #ff3dbb; border-radius: 10px; }
+
+        /* ── CURSOR ── */
+        #cursor-dot {
+            width: 10px; height: 10px; background: #ff3dbb;
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        #cursor-ring {
+            width: 32px; height: 32px;
+            border: 2px solid rgba(255,61,187,0.5);
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s;
+        }
+        #cursor-ring.big { width: 48px; height: 48px; border-color: #ff3dbb; }
+
+        /* ── GLITTER ── */
+        .glitter {
+            position: fixed; pointer-events: none; z-index: 9990; font-size: 14px;
+            animation: glitter-fall 1.2s ease-out forwards;
+        }
+        @keyframes glitter-fall {
+            0%   { opacity:1; transform: translateY(0) rotate(0deg) scale(1); }
+            100% { opacity:0; transform: translateY(60px) rotate(360deg) scale(0); }
+        }
+
+        /* ── SHIMMER ── */
+        .shimmer {
+            background: linear-gradient(90deg, #ff3dbb 0%, #ffb3e6 40%, #ff3dbb 60%, #c084fc 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        /* ── BOUNCE ── */
+        .bounce-loop { animation: bounce-loop 2s ease-in-out infinite; }
+        @keyframes bounce-loop { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+        /* ── BENTO ── */
+        .bento-card { transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275), box-shadow 0.3s !important; }
+        .bento-card:hover { transform: scale(1.02); }
+        .glow-pink:hover { box-shadow: 0 0 32px 4px rgba(255,61,187,0.15); }
+
+        /* ── BG STARS ── */
+        .bg-star {
+            position: fixed; border-radius: 50%; background: white;
+            pointer-events: none; z-index: 0;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+            transition: opacity 0.6s;
+        }
+        .dark .bg-star { opacity: var(--op); }
+        :not(.dark) .bg-star { opacity: 0; }
+        @keyframes twinkle { from{opacity:0.05} to{opacity:0.55} }
+
+        /* ── GRAD BORDER ── */
+        .grad-border {
+            position: relative; border-radius: 2.5rem;
+            background: #fff; /* light mode default */
+        }
+        .dark .grad-border { background: #161616; }
+        .grad-border::before {
+            content: ''; position: absolute; inset: 0; border-radius: 2.5rem; padding: 1.5px;
+            background: linear-gradient(135deg, #ff3dbb, #c084fc, #38bdf8);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+
+        /* ── BLINK ── */
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50%{opacity:0} }
+
+        /* ── CONTACT INPUTS ── */
+        .c-input {
+            width: 100%; background: transparent;
+            border-bottom: 1.5px solid rgba(255,61,187,0.3);
+            padding: 0.6rem 0; font-size: 0.95rem;
+            color: inherit; outline: none; transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .c-input:focus { border-color: #ff3dbb; }
+        .dark .c-input::placeholder { color: rgba(200,200,200,0.4); }
+        .c-input::placeholder { color: rgba(100,100,100,0.5); }
+
+        /* ── POP IN ── */
+        @keyframes pop-in { 0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+        .pop-in { animation: pop-in 0.4s ease forwards; }
+
+        /* ── SAKURA BURST ── */
+        @keyframes sakura-burst {
+            0%   { transform:translate(0,0) rotate(0deg) scale(1); opacity:1; }
+            100% { transform:translate(var(--tx),var(--ty)) rotate(720deg) scale(0); opacity:0; }
+        }
+        .sakura-burst { position:fixed; pointer-events:none; z-index:9995; font-size:1rem; animation:sakura-burst 0.8s ease-out forwards; }
+
+        /* light mode bg tint */
+        :not(.dark) body { background-color: #fdf4ff; }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100">
+
+<!-- Ripple -->
+<div id="theme-ripple"></div>
+
+<!-- Cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- BG Stars -->
+<div id="bg-stars"></div>
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-darkBg/80 backdrop-blur-md border-b dark:border-white/5 border-pink-100">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
+        <div class="text-xl font-extrabold tracking-tighter uppercase">
+            Introducing <span class="text-brandPink">Chiyunni :3</span>
+        </div>
+
+        <div class="hidden md:flex items-center gap-6">
+
+            <!-- ✨ THE TOGGLE ✨ -->
+            <div class="flex items-center gap-2.5">
+                <span class="text-xs font-bold text-slate-400 dark:text-slate-500 select-none" id="theme-label-light">☀️</span>
+                <button
+                    class="theme-toggle"
+                    id="theme-btn"
+                    onclick="toggleTheme(event)"
+                    title="Toggle dark/light mode"
+                    aria-label="Toggle theme">
+
+                    <!-- Stars (dark mode decoration) -->
+                    <div class="toggle-stars">
+                        <div class="toggle-star" style="width:2px;height:2px;top:8px;left:12px;"></div>
+                        <div class="toggle-star" style="width:3px;height:3px;top:14px;left:22px;"></div>
+                        <div class="toggle-star" style="width:2px;height:2px;top:20px;left:10px;"></div>
+                        <div class="toggle-star" style="width:2px;height:2px;top:10px;left:32px;"></div>
+                    </div>
+
+                    <!-- Thumb (sun / moon) -->
+                    <div class="toggle-thumb" id="toggle-thumb">
+                        <span id="toggle-icon">🌙</span>
+                    </div>
+                </button>
+                <span class="text-xs font-bold text-slate-400 dark:text-slate-500 select-none">🌙</span>
+            </div>
+
+            <a href="#contact" class="bg-brandPink text-white px-6 py-2 rounded-full font-bold hover:scale-105 transition active:scale-95 shadow-lg shadow-pink-500/20">
+                Wonderhoy!
+            </a>
+        </div>
+
+        <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div x-show="mobileMenu" x-transition x-cloak class="md:hidden bg-white dark:bg-cardDark border-b dark:border-white/10 px-6 py-6 space-y-4">
+        <button onclick="toggleTheme(event)" class="w-full text-left py-2 font-bold flex items-center gap-2">
+            <span id="mobile-theme-icon">🌙</span> Switch Theme
+        </button>
+        <a href="#contact" class="block w-full bg-brandPink text-white py-3 rounded-xl font-bold text-center">Wonderhoy!</a>
+    </div>
+</nav>
+
+<!-- BENTO GRID -->
+<main class="max-w-6xl mx-auto px-6 py-10 relative z-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+
+        <!-- HERO -->
+        <div data-aos="fade-up" class="col-span-1 sm:col-span-2 md:col-span-3 p-8 md:p-12 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 shadow-sm bento-card glow-pink">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="px-3 py-1 bg-brandPink/10 text-brandPink text-xs font-bold rounded-full uppercase tracking-widest">Greetings everyone!</span>
+                <span class="bounce-loop text-lg">🌸</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight mb-6">
+                I'm <span class="shimmer">Chiyunni</span>, a <span class="text-brandPink italic">cute Digital Artist</span> also building the web.
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg md:text-xl max-w-xl mb-3">
+                I draw things and break code. Lover of pink aesthetics and creative technology.<span class="blink text-brandPink">|</span>
+            </p>
+            <div class="flex flex-wrap gap-3 text-xs font-bold mt-2">
+                <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="flex items-center gap-1.5 text-slate-400 hover:text-brandPink transition">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    @hanakobunni4l1fe
+                </a>
+                <span class="text-slate-300 dark:text-slate-600">·</span>
+                <a href="https://x.com/Hanni_bunni89" target="_blank" class="flex items-center gap-1.5 text-slate-400 hover:text-brandPink transition">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    @Hanni_bunni89
+                </a>
+                <span class="text-slate-300 dark:text-slate-600">·</span>
+                <span class="text-slate-400">she/her 🌸</span>
+            </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div data-aos="fade-up" data-aos-delay="100" class="col-span-1 rounded-[2.5rem] bg-slate-200 dark:bg-cardDark overflow-hidden bento-card h-64 md:h-auto relative group">
+            <img src="https://i.pinimg.com/736x/66/74/83/667483f6587dd3c3ad5a307171d3123b.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" alt="Profile">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-5">
+                <span class="text-white text-sm font-bold">that's me!! :3</span>
+            </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div data-aos="fade-up" data-aos-delay="200" class="col-span-1 sm:col-span-2 p-8 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 shadow-sm bento-card glow-pink flex flex-col justify-center">
+            <h3 class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-widest">About me ^_^ and interest</h3>
+            <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-pink-400 hover:text-brandPink transition cursor-default">I love Hatsune miku 🎵</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-pink-400 hover:text-brandPink transition cursor-default">I listen to music 🎧</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 font-bold text-brandPink hover:scale-105 transition cursor-default">Kidnapped Node.js 💀</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 italic hover:border-pink-400 hover:text-brandPink transition cursor-default">Python is my fav :3 🐍</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-pink-400 hover:text-brandPink transition cursor-default">Not a developer ^^ 🎨</span>
+            </div>
+        </div>
+
+        <!-- ART EXP -->
+        <div data-aos="fade-up" data-aos-delay="300" class="col-span-1 p-8 rounded-[2.5rem] bg-slate-900 text-white flex flex-col justify-center items-center text-center bento-card glow-pink relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-pink-900/20 to-transparent pointer-events-none"></div>
+            <span class="text-5xl font-black italic text-brandPink relative z-10 hover:scale-110 transition inline-block">11</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold mt-2 relative z-10">Months Experience<br>of Digital Art ✨</span>
+        </div>
+
+        <!-- SCHOOL ENERGY -->
+        <div data-aos="fade-up" data-aos-delay="400" class="col-span-1 p-8 rounded-[2.5rem] bg-brandPink text-white flex flex-col justify-center items-center bento-card relative overflow-hidden">
+            <div class="absolute top-3 right-4 text-white/20 text-6xl font-black pointer-events-none select-none">lol</div>
+            <span class="text-5xl font-black italic hover:scale-110 transition inline-block">0%</span>
+            <span class="text-[10px] uppercase font-bold opacity-80 mt-1 text-center">Energy in school lmao 💤</span>
+        </div>
+
+        <!-- SAKURA MIKU -->
+        <div data-aos="fade-up" data-aos-delay="500" class="col-span-1 sm:col-span-2 md:col-span-2 rounded-[2.5rem] bg-indigo-600 overflow-hidden relative group cursor-pointer bento-card h-80">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10 p-8 flex flex-col justify-end">
+                <h3 class="text-white text-2xl font-bold group-hover:text-brandPink transition">Sakura Miku! 🌸</h3>
+                <p class="text-indigo-200 text-sm opacity-80">My favorite kind of miku<br><span class="text-[10px]">(Pinterest credits not mine)</span></p>
+            </div>
+            <img src="https://i.pinimg.com/736x/4b/f2/9d/4bf29da686eff3794fd9c98c47e0cbf9.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Miku">
+            <div class="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"
+                 style="background:radial-gradient(circle at 50% 50%,rgba(255,61,187,0.15),transparent 70%)"></div>
+        </div>
+
+        <!-- QUOTE -->
+        <div data-aos="fade-up" data-aos-delay="600" class="col-span-1 sm:col-span-2 md:col-span-2 p-8 md:p-12 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 shadow-sm flex items-center bento-card glow-pink">
+            <div>
+                <span class="text-4xl text-brandPink font-black leading-none">"</span>
+                <p class="text-slate-500 dark:text-slate-400 italic text-lg mt-1">
+                    Chiyunni is just a lazy girl who likes to draw and build something new and cute!
+                </p>
+                <span class="text-4xl text-brandPink font-black leading-none float-right">"</span>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div data-aos="fade-up" data-aos-delay="100" class="col-span-1 grad-border p-8 flex flex-col justify-center items-center text-center bento-card">
+            <div class="text-3xl mb-2 bounce-loop">🎨</div>
+            <span class="text-3xl font-black text-brandPink">Artist</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1">First & always</span>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="150" class="col-span-1 grad-border p-8 flex flex-col justify-center items-center text-center bento-card">
+            <div class="text-3xl mb-2 bounce-loop" style="animation-delay:0.3s">💻</div>
+            <span class="text-3xl font-black text-brandPink">Builder</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1">Learning every day</span>
+        </div>
+
+        <!-- VIBING -->
+        <div data-aos="fade-up" data-aos-delay="200" class="col-span-1 sm:col-span-2 p-8 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 bento-card glow-pink flex flex-col justify-center gap-3">
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Currently Vibing To 🎵</h3>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+                    <img src="https://i.pinimg.com/736x/59/78/da/5978da4cde545de3e05b4f5214ce3e95.jpg" class="w-full h-full object-cover" alt="miku">
+                </div>
+                <div>
+                    <div class="font-bold text-sm">Vocaloid playlist 🌸</div>
+                    <div class="text-xs text-slate-400">Hatsune Miku forever</div>
+                </div>
+                <div class="ml-auto flex gap-1 items-end h-6">
+                    <span class="w-1 bg-brandPink rounded-full animate-bounce" style="height:40%;animation-delay:0s"></span>
+                    <span class="w-1 bg-brandPink rounded-full animate-bounce" style="height:80%;animation-delay:0.1s"></span>
+                    <span class="w-1 bg-brandPink rounded-full animate-bounce" style="height:60%;animation-delay:0.2s"></span>
+                    <span class="w-1 bg-brandPink rounded-full animate-bounce" style="height:100%;animation-delay:0.15s"></span>
+                    <span class="w-1 bg-brandPink rounded-full animate-bounce" style="height:50%;animation-delay:0.05s"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" data-aos="fade-up" class="mt-4 grad-border p-10 md:p-14 bento-card">
+        <div class="max-w-2xl mx-auto">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="px-3 py-1 bg-brandPink/10 text-brandPink text-xs font-bold rounded-full uppercase tracking-widest">say hi!</span>
+                <span class="bounce-loop text-lg" style="animation-delay:0.5s">💌</span>
+            </div>
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter mb-2">Let's <span class="shimmer">Connect</span> ♡</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-10 text-sm">Whether you want to collab on art, talk about Miku, or just say hi — I'd love to hear from you! 🌸</p>
+            <div class="flex flex-wrap gap-3 mb-10">
+                <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-pink-200 dark:border-white/10 bg-pink-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 hover:border-brandPink hover:text-brandPink transition font-bold text-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    GitHub
+                </a>
+                <a href="https://x.com/Hanni_bunni89" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-pink-200 dark:border-white/10 bg-pink-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 hover:border-brandPink hover:text-brandPink transition font-bold text-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    @Hanni_bunni89
+                </a>
+                <a href="https://x.com/Hanni_bunni89" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-brandPink text-white hover:scale-105 transition font-bold text-sm shadow-lg shadow-pink-500/25">
+                    💌 DM me on X
+                </a>
+            </div>
+            <div id="contact-form-wrap">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-brandPink block mb-2">Your Name</label>
+                        <input id="c-name" class="c-input" type="text" placeholder="e.g. Hatsune Miku :3">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-brandPink block mb-2">Email</label>
+                        <input id="c-email" class="c-input" type="email" placeholder="your@email.com">
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-brandPink block mb-2">Message</label>
+                    <textarea id="c-msg" class="c-input resize-none" rows="3" placeholder="Say something nice! ♡"></textarea>
+                </div>
+                <button id="send-btn" onclick="handleSend()"
+                    class="bg-brandPink text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition active:scale-95 shadow-lg shadow-pink-500/25 flex items-center gap-2">
+                    Send it! 🌸
+                </button>
+            </div>
+            <div id="contact-success" class="hidden text-center py-10">
+                <div class="text-6xl mb-4 pop-in inline-block">🌸</div>
+                <h3 class="text-2xl font-extrabold text-brandPink mb-2">Message sent! ♡</h3>
+                <p class="text-slate-400 text-sm">Thanks for reaching out! I'll get back to you soon~</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center text-xs text-slate-400 pb-8">
+        made with <span class="text-brandPink">♡</span> by chiyunni · <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="hover:text-brandPink transition">@hanakobunni4l1fe</a> · <a href="https://x.com/Hanni_bunni89" target="_blank" class="hover:text-brandPink transition">@Hanni_bunni89</a>
+        <span class="bounce-loop inline-block ml-1">🌸</span>
+    </div>
+</main>
+
+<script>
+    // ── Alpine init ──
+    function themeApp() {
+        return { darkMode: true, mobileMenu: false };
+    }
+
+    AOS.init({ duration: 900, once: true, easing: 'ease-out-quart' });
+
+    // ── BG stars ──
+    const starsWrap = document.getElementById('bg-stars');
+    for (let i = 0; i < 60; i++) {
+        const s = document.createElement('div');
+        s.className = 'bg-star';
+        const sz = Math.random() * 2 + 0.5;
+        const op = (Math.random() * 0.4 + 0.1).toFixed(2);
+        s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}vw;top:${Math.random()*200}vh;--d:${(Math.random()*3+1.5).toFixed(1)}s;--op:${op};animation-delay:${(Math.random()*5).toFixed(1)}s`;
+        starsWrap.appendChild(s);
+    }
+
+    // ── Falling sakura ──
+    function createSakura() {
+        const s = document.createElement('div');
+        s.innerHTML = ['🌸','🌺','✿','❀'][Math.floor(Math.random()*4)];
+        s.style.cssText = `position:fixed;top:-20px;left:${Math.random()*100}vw;font-size:${Math.random()*10+8}px;opacity:${Math.random()*0.7+0.2};pointer-events:none;z-index:5;transition:transform 5s linear,top 5s linear;`;
+        document.body.appendChild(s);
+        setTimeout(() => {
+            s.style.transform = `translateX(${Math.random()*100-50}px) rotate(${Math.random()*360}deg)`;
+            s.style.top = '110vh';
+        }, 10);
+        setTimeout(() => s.remove(), 5100);
+    }
+    setInterval(createSakura, 400);
+
+    // ── Cursor ──
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    (function animCursor(){
+        dot.style.left=mx+'px'; dot.style.top=my+'px';
+        rx+=(mx-rx)*0.18; ry+=(my-ry)*0.18;
+        ring.style.left=rx+'px'; ring.style.top=ry+'px';
+        requestAnimationFrame(animCursor);
+    })();
+    document.querySelectorAll('button,a,.bento-card,input,textarea').forEach(el=>{
+        el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+        el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+    });
+
+    // ── Glitter on click ──
+    const glitters=['✨','⭐','🌟','💫','★','✦'];
+    window.addEventListener('click',e=>{
+        for(let i=0;i<6;i++){
+            const g=document.createElement('div');
+            g.className='glitter';
+            g.innerText=glitters[Math.floor(Math.random()*glitters.length)];
+            g.style.left=e.clientX+(Math.random()*40-20)+'px';
+            g.style.top=e.clientY+(Math.random()*20-10)+'px';
+            document.body.appendChild(g);
+            setTimeout(()=>g.remove(),1200);
+        }
+        // sakura burst
+        for(let i=0;i<5;i++){
+            const s=document.createElement('div');
+            s.className='sakura-burst';
+            s.innerText='🌸';
+            const angle=(i/5)*Math.PI*2;
+            const dist=40+Math.random()*40;
+            s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px';
+            s.style.setProperty('--tx',Math.cos(angle)*dist+'px');
+            s.style.setProperty('--ty',Math.sin(angle)*dist+'px');
+            document.body.appendChild(s);
+            setTimeout(()=>s.remove(),800);
+        }
+    });
+
+    // ── DARK/LIGHT TOGGLE ──
+    let isDark = true;
+
+    function toggleTheme(e) {
+        isDark = !isDark;
+
+        // 1) Ripple from button position
+        const ripple = document.getElementById('theme-ripple');
+        const btn    = document.getElementById('theme-btn');
+        const rect   = btn.getBoundingClientRect();
+        const cx     = rect.left + rect.width / 2;
+        const cy     = rect.top  + rect.height / 2;
+        ripple.style.left = cx + 'px';
+        ripple.style.top  = cy + 'px';
+        ripple.className  = isDark ? 'ripple-dark' : 'ripple-light';
+
+        // After ripple peaks, swap theme, then fade ripple out
+        setTimeout(() => {
+            document.documentElement.classList.toggle('dark', isDark);
+            // sync Alpine
+            const alpineEl = document.querySelector('[x-data]');
+            if (alpineEl && alpineEl._x_dataStack) {
+                alpineEl._x_dataStack[0].darkMode = isDark;
+            }
+        }, 350);
+
+        setTimeout(() => {
+            ripple.className = '';
+            ripple.style.transform = 'scale(0)';
+        }, 720);
+
+        // 2) Icon swap with spin
+        const icon       = document.getElementById('toggle-icon');
+        const mobileIcon = document.getElementById('mobile-theme-icon');
+        icon.classList.add('icon-spin');
+        setTimeout(() => {
+            icon.innerText       = isDark ? '🌙' : '☀️';
+            if (mobileIcon) mobileIcon.innerText = isDark ? '🌙' : '☀️';
+            icon.classList.remove('icon-spin');
+        }, 200);
+
+        // 3) Star burst from button
+        const burst = isDark
+            ? ['⭐','🌟','✦','💫','🌙']
+            : ['☀️','✨','💛','🌟','⭐'];
+        for (let i = 0; i < 8; i++) {
+            const s = document.createElement('div');
+            s.className = 'star-burst';
+            s.innerText = burst[Math.floor(Math.random()*burst.length)];
+            const angle = (i / 8) * Math.PI * 2;
+            const dist  = 50 + Math.random() * 50;
+            s.style.left = cx + 'px';
+            s.style.top  = cy + 'px';
+            s.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+            s.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 700);
+        }
+    }
+
+    // ── Contact send ──
+    function handleSend() {
+        const name  = document.getElementById('c-name').value.trim();
+        const email = document.getElementById('c-email').value.trim();
+        const msg   = document.getElementById('c-msg').value.trim();
+        if (!name || !email || !msg) {
+            const btn = document.getElementById('send-btn');
+            btn.textContent = 'Fill everything in! 🥲';
+            btn.classList.add('opacity-70');
+            setTimeout(()=>{ btn.textContent='Send it! 🌸'; btn.classList.remove('opacity-70'); }, 2000);
+            return;
+        }
+        document.getElementById('contact-form-wrap').classList.add('hidden');
+        const success = document.getElementById('contact-success');
+        success.classList.remove('hidden');
+        success.classList.add('pop-in');
+        for(let i=0;i<20;i++){
+            setTimeout(()=>{
+                const s=document.createElement('div');
+                s.className='glitter';
+                s.innerText=['🌸','✨','💕','⭐'][Math.floor(Math.random()*4)];
+                s.style.left=(20+Math.random()*60)+'vw';
+                s.style.top=(20+Math.random()*50)+'vh';
+                document.body.appendChild(s);
+                setTimeout(()=>s.remove(),1200);
+            }, i*80);
+        }
+    }
+</script>
+</body>
+</html>
