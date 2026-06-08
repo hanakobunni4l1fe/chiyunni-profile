@@ -11,7 +11,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/jpeg" href="https://i.pinimg.com/1200x/a8/61/88/a861884fd118525ed9a744962aa943e8.jpg">
+    <link rel="icon" type="image/jpeg" href="https://i.pinimg.com/736x/1c/5d/1f/1c5d1fb0df3774dd1ab75f44d42c74f7.jpg">
 
     <script>
         tailwind.config = {
@@ -19,7 +19,7 @@
             theme: {
                 extend: {
                     colors: {
-                        brandPink: '#ff3dbb',
+                        brandPurple: '#BF40BF',
                         darkBg: '#0a0a0a',
                         cardDark: '#161616',
                     }
@@ -140,11 +140,11 @@
         /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #ff3dbb; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #7F00FF; border-radius: 10px; }
 
         /* ── CURSOR ── */
         #cursor-dot {
-            width: 10px; height: 10px; background: #ff3dbb;
+            width: 10px; height: 10px; background: 	#7F00FF;
             border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
             transform: translate(-50%, -50%);
         }
@@ -155,7 +155,7 @@
             transform: translate(-50%, -50%);
             transition: width 0.2s, height 0.2s, border-color 0.2s;
         }
-        #cursor-ring.big { width: 48px; height: 48px; border-color: #ff3dbb; }
+        #cursor-ring.big { width: 48px; height: 48px; border-color: #7F00FF; }
 
         /* ── GLITTER ── */
         .glitter {
@@ -169,7 +169,7 @@
 
         /* ── SHIMMER ── */
         .shimmer {
-            background: linear-gradient(90deg, #ff3dbb 0%, #ffb3e6 40%, #ff3dbb 60%, #c084fc 100%);
+            background: linear-gradient(90deg, #7F00FF 0%, #C3B1E1 40%, #7F00FF 60%, #c084fc 100%);
             background-size: 200% auto;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             animation: shimmer 3s linear infinite;
@@ -204,7 +204,7 @@
         .dark .grad-border { background: #161616; }
         .grad-border::before {
             content: ''; position: absolute; inset: 0; border-radius: 2.5rem; padding: 1.5px;
-            background: linear-gradient(135deg, #ff3dbb, #c084fc, #38bdf8);
+            background: linear-gradient(135deg, #7F00FF, #c084fc, #38bdf8);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
         }
@@ -254,10 +254,10 @@
 <div id="bg-stars"></div>
 
 <!-- NAV -->
-<nav class="sticky top-0 z-50 bg-white/80 dark:bg-darkBg/80 backdrop-blur-md border-b dark:border-white/5 border-pink-100">
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-darkBg/80 backdrop-blur-md border-b dark:border-white/5 border-purple-100">
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
         <div class="text-xl font-extrabold tracking-tighter uppercase">
-            Introducing <span class="text-brandPink">𐙚Chiyunni</span>
+            Introducing <span class="text-brandPurple">𐙚Chiyunni</span>
         </div>
 
         <div class="hidden md:flex items-center gap-6">
@@ -312,16 +312,16 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
 
         <!-- HERO -->
-        <div data-aos="fade-up" class="col-span-1 sm:col-span-2 md:col-span-3 p-8 md:p-12 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 shadow-sm bento-card glow-pink">
+        <div data-aos="fade-up" class="col-span-1 sm:col-span-2 md:col-span-3 p-8 md:p-12 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-purple-100 shadow-sm bento-card glow-purple">
             <div class="flex items-center gap-2 mb-6">
-                <span class="px-3 py-1 bg-brandPink/10 text-brandPink text-xs font-bold rounded-full uppercase tracking-widest">Greetings everyone!</span>
+                <span class="px-3 py-1 bg-brandPurple/10 text-brandPurple text-xs font-bold rounded-full uppercase tracking-widest">Greetings everyone!</span>
                 <span class="bounce-loop text-lg">🌸</span>
             </div>
             <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight mb-6">
-                I'm <span class="shimmer">Chiyunni</span>, a <span class="text-brandPink italic">cute Digital Artist</span> and a silly internet kitty.
+                I'm <span class="shimmer">Chiyunni</span>, a <span class="text-brandPurple italic">cute Digital Artist</span> and a silly internet kitty.
             </h1>
             <p class="text-slate-500 dark:text-slate-400 text-lg md:text-xl max-w-xl mb-3">
-                I draw things and break code. Lover of pink aesthetics and creative technology.<span class="blink text-brandPink">|</span>
+                I draw things and break code. Lover of cute aesthetics and creative technology.<span class="blink text-brandPurple">|</span>
             </p>
             <div class="flex flex-wrap gap-3 text-xs font-bold mt-2">
                 <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="flex items-center gap-1.5 text-slate-400 hover:text-brandPink transition">
@@ -329,44 +329,44 @@
                     @hanakobunni4l1fe
                 </a>
                 <span class="text-slate-300 dark:text-slate-600">·</span>
-                <a href="https://x.com/Chiyunni246464" target="_blank" class="flex items-center gap-1.5 text-slate-400 hover:text-brandPink transition">
+                <a href="https://x.com/codexchiyunni" target="_blank" class="flex items-center gap-1.5 text-slate-400 hover:text-brandPink transition">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    @Chiyunni246464 
+                    @codexchiyunni
                 </a>
                 <span class="text-slate-300 dark:text-slate-600">·</span>
-                <span class="text-slate-400">she/her 🌸</span>
+                <span class="text-slate-400">she/her˖𓍢ִ໋❀.ೃ࿔</span>
             </div>
         </div>
 
         <!-- PROFILE -->
         <div data-aos="fade-up" data-aos-delay="100" class="col-span-1 rounded-[2.5rem] bg-slate-200 dark:bg-cardDark overflow-hidden bento-card h-64 md:h-auto relative group">
-            <img src="https://i.pinimg.com/736x/66/74/83/667483f6587dd3c3ad5a307171d3123b.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" alt="Profile">
+            <img src="https://i.pinimg.com/736x/01/08/5b/01085b6e212f4e4068a82158c77e891c.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" alt="Profile">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-5">
-                <span class="text-white text-sm font-bold">that's me!! :3</span>
+                <span class="text-white text-sm font-bold">Asahina Mafuyu!! </span>
             </div>
         </div>
 
         <!-- ABOUT -->
-        <div data-aos="fade-up" data-aos-delay="200" class="col-span-1 sm:col-span-2 p-8 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 shadow-sm bento-card glow-pink flex flex-col justify-center">
-            <h3 class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-widest">About me ^_^ and interest</h3>
+        <div data-aos="fade-up" data-aos-delay="200" class="col-span-1 sm:col-span-2 p-8 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-purple-100 shadow-sm bento-card glow-pink flex flex-col justify-center">
+            <h3 class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-widest">About me ^_^ and my interest</h3>
             <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-pink-400 hover:text-brandPink transition cursor-default">Hatsune miku is my favorite vocaloid</span>
-                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-pink-400 hover:text-brandPink transition cursor-default">listening to music is my hobby</span>
-                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 font-bold text-brandPink hover:scale-105 transition cursor-default">Taking a break from tech</span>
-                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 italic hover:border-pink-400 hover:text-brandPink transition cursor-default">I play project sekai!</span>
-                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-pink-400 hover:text-brandPink transition cursor-default">I dream to become a music producer</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-purple-400 hover:text-brandPurple transition cursor-default">Hatsune miku is my favorite vocaloid</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-purple-400 hover:text-brandPurple transition cursor-default">listening to music is my hobby</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 font-bold text-brandPurple hover:scale-105 transition cursor-default">Taking a break from tech</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 italic hover:border-purple-400 hover:text-brandPurple transition cursor-default">I play project sekai!</span>
+                <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-sm border dark:border-white/5 hover:border-purple-400 hover:text-brandPurple transition cursor-default">I dream to become a music producer</span>
             </div>
         </div>
 
         <!-- ART EXP -->
-        <div data-aos="fade-up" data-aos-delay="300" class="col-span-1 p-8 rounded-[2.5rem] bg-slate-900 text-white flex flex-col justify-center items-center text-center bento-card glow-pink relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-pink-900/20 to-transparent pointer-events-none"></div>
-            <span class="text-5xl font-black italic text-brandPink relative z-10 hover:scale-110 transition inline-block">1</span>
-            <span class="text-[10px] text-slate-400 uppercase font-bold mt-2 relative z-10">Year Experience<br>of Digital Art ⋆౨ৎ˚⟡˖ ࣪ </span>
+        <div data-aos="fade-up" data-aos-delay="300" class="col-span-1 p-8 rounded-[2.5rem] bg-slate-900 text-white flex flex-col justify-center items-center text-center bento-card glow-purple relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent pointer-events-none"></div>
+            <span class="text-5xl font-black italic text-brandPurple relative z-10 hover:scale-110 transition inline-block">1</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold mt-2 relative z-10">5 month experience<br>of playing pjsk!⋆౨ৎ˚⟡˖ ࣪</span>
         </div>
 
         <!-- SCHOOL ENERGY -->
-        <div data-aos="fade-up" data-aos-delay="400" class="col-span-1 p-8 rounded-[2.5rem] bg-brandPink text-white flex flex-col justify-center items-center bento-card relative overflow-hidden">
+        <div data-aos="fade-up" data-aos-delay="400" class="col-span-1 p-8 rounded-[2.5rem] bg-brandPurple text-white flex flex-col justify-center items-center bento-card relative overflow-hidden">
             <div class="absolute top-3 right-4 text-white/20 text-6xl font-black pointer-events-none select-none">lol</div>
             <span class="text-5xl font-black italic hover:scale-110 transition inline-block">0%</span>
             <span class="text-[10px] uppercase font-bold opacity-80 mt-1 text-center">Energy in school lmao </span>
@@ -375,10 +375,10 @@
         <!-- SAKURA MIKU -->
         <div data-aos="fade-up" data-aos-delay="500" class="col-span-1 sm:col-span-2 md:col-span-2 rounded-[2.5rem] bg-indigo-600 overflow-hidden relative group cursor-pointer bento-card h-80">
             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10 p-8 flex flex-col justify-end">
-                <h3 class="text-white text-2xl font-bold group-hover:text-brandPink transition">Sakura Miku! 🌸</h3>
-                <p class="text-indigo-200 text-sm opacity-80">My favorite kind of miku<br><span class="text-[10px]">(Pinterest credits not mine)</span></p>
+                <h3 class="text-white text-2xl font-bold group-hover:text-brandPink transition">Asahina Mafuyu˚ʚ♡ɞ˚</h3>
+                <p class="text-indigo-200 text-sm opacity-80">A kitchen filled with silence<br><span class="text-[10px]">(card from kana5)</span></p>
             </div>
-            <img src="https://i.pinimg.com/736x/4b/f2/9d/4bf29da686eff3794fd9c98c47e0cbf9.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Miku">
+            <img src="https://i.pinimg.com/736x/a4/61/b5/a461b575caa0d8dc69b149877a15e3f3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Miku">
             <div class="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"
                  style="background:radial-gradient(circle at 50% 50%,rgba(255,61,187,0.15),transparent 70%)"></div>
         </div>
@@ -397,24 +397,24 @@
         <!-- STATS -->
         <div data-aos="fade-up" data-aos-delay="100" class="col-span-1 grad-border p-8 flex flex-col justify-center items-center text-center bento-card">
             <div class="text-3xl mb-2 bounce-loop">˖𓍢ִ໋❀.ೃ࿔</div>
-            <span class="text-3xl font-black text-brandPink">Artist</span>
-            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1">let's put some colors</span>
+            <span class="text-3xl font-black text-brandPink">Angel</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1">It is time to fly!</span>
         </div>
         <div data-aos="fade-up" data-aos-delay="150" class="col-span-1 grad-border p-8 flex flex-col justify-center items-center text-center bento-card">
             <div class="text-3xl mb-2 bounce-loop" style="animation-delay:0.3s">˚ʚ♡ɞ</div>
-            <span class="text-3xl font-black text-brandPink">Builder</span>
-            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1">Time to build something new! </span>
+            <span class="text-3xl font-black text-brandPink">Internet kitty</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1">Time to explore the internet </span>
         </div>
 
         <!-- VIBING -->
         <div data-aos="fade-up" data-aos-delay="200" class="col-span-1 sm:col-span-2 p-8 rounded-[2.5rem] bg-white dark:bg-cardDark border dark:border-white/5 border-pink-100 bento-card glow-pink flex flex-col justify-center gap-3">
-            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Currently Vibing To 🎵</h3>
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Currently Vibing To 𝄞 </h3>
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
-                    <img src="https://i.pinimg.com/736x/59/78/da/5978da4cde545de3e05b4f5214ce3e95.jpg" class="w-full h-full object-cover" alt="miku">
+                    <img src="https://i.pinimg.com/736x/b1/be/2d/b1be2d60e99408dddd30d8dd06e14c37.jpg" class="w-full h-full object-cover" alt="miku">
                 </div>
                 <div>
-                    <div class="font-bold text-sm">Vocaloid playlist 🌸</div>
+                    <div class="font-bold text-sm">A cute playlist</div>
                     <div class="text-xs text-slate-400">Hatsune Miku forever</div>
                 </div>
                 <div class="ml-auto flex gap-1 items-end h-6">
@@ -432,29 +432,29 @@
     <div id="contact" data-aos="fade-up" class="mt-4 grad-border p-10 md:p-14 bento-card">
         <div class="max-w-2xl mx-auto">
             <div class="flex items-center gap-3 mb-2">
-                <span class="px-3 py-1 bg-brandPink/10 text-brandPink text-xs font-bold rounded-full uppercase tracking-widest">say hi!</span>
-                <span class="bounce-loop text-lg" style="animation-delay:0.5s">💌</span>
+                <span class="px-3 py-1 bg-brandPink/10 text-brandPurple text-xs font-bold rounded-full uppercase tracking-widest">say hi!</span>
+                <span class="bounce-loop text-lg" style="animation-delay:0.5s">˖ ݁♬⋆.˚𝄞</span>
             </div>
             <h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter mb-2">Let's <span class="shimmer">Connect</span> ♡</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-10 text-sm">Whether you want to collab on art, talk about Miku, or just say hi — I'd love to hear from you! 🌸</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-10 text-sm">Whether you want to collab on art, talk about Miku, or just say hi — I'd love to hear from you! ✿ </p>
             <div class="flex flex-wrap gap-3 mb-10">
-                <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-pink-200 dark:border-white/10 bg-pink-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 hover:border-brandPink hover:text-brandPink transition font-bold text-sm">
+                <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-200 dark:border-white/10 bg-purple-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 hover:border-brandPurple hover:text-brandPurple transition font-bold text-sm">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                     GitHub
                 </a>
-                <a href="https://x.com/Chiyunni246464" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-pink-200 dark:border-white/10 bg-pink-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 hover:border-brandPink hover:text-brandPink transition font-bold text-sm">
+                <a href="https://x.com/codexchiyunni" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-200 dark:border-white/10 bg-pink-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 hover:border-brandPurple hover:text-brandPurple transition font-bold text-sm">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    @Chiyunni246464 
+                    @codexchiyunni
                 </a>
-                <a href="https://x.com/Chiyunni246464" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-brandPink text-white hover:scale-105 transition font-bold text-sm shadow-lg shadow-pink-500/25">
-                    💌 DM me on X
+                <a href="https://x.com/codexchiyunni" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-brandPurple text-white hover:scale-105 transition font-bold text-sm shadow-lg shadow-purple-500/25">
+                    💌 DM me on X(Twitter) 
                 </a>
             </div>
             <div id="contact-form-wrap">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
                     <div>
                         <label class="text-[10px] font-bold uppercase tracking-widest text-brandPink block mb-2">Your Name</label>
-                        <input id="c-name" class="c-input" type="text" placeholder="e.g. Hatsune Miku :3">
+                        <input id="c-name" class="c-input" type="text" placeholder="e.g. Hatsune Miku ♥︎">
                     </div>
                     <div>
                         <label class="text-[10px] font-bold uppercase tracking-widest text-brandPink block mb-2">Email</label>
@@ -467,19 +467,19 @@
                 </div>
                 <button id="send-btn" onclick="handleSend()"
                     class="bg-brandPink text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition active:scale-95 shadow-lg shadow-pink-500/25 flex items-center gap-2">
-                    Send it! 🌸
+                    Send it! ⋆˚𝜗𝜚˚⋆
                 </button>
             </div>
             <div id="contact-success" class="hidden text-center py-10">
-                <div class="text-6xl mb-4 pop-in inline-block">🌸</div>
-                <h3 class="text-2xl font-extrabold text-brandPink mb-2">Message sent! ♡</h3>
+                <div class="text-6xl mb-4 pop-in inline-block">◝(ᵔᗜᵔ)◜</div>
+                <h3 class="text-2xl font-extrabold text-brandPurple mb-2">Message sent! ♡</h3>
                 <p class="text-slate-400 text-sm">Thanks for reaching out! I'll get back to you soon~</p>
             </div>
         </div>
     </div>
 
     <div class="mt-4 text-center text-xs text-slate-400 pb-8">
-        made with <span class="text-brandPink">♡</span> by chiyunni · <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="hover:text-brandPink transition">@hanakobunni4l1fe</a> · <a href="https://x.com/Chiyunni246464" target="_blank" class="hover:text-brandPink transition">@Chiyunni246464</a>
+        made with <span class="text-brandPurple">♡</span> by chiyunni · <a href="https://github.com/hanakobunni4l1fe" target="_blank" class="hover:text-brandPurple transition">@hanakobunni4l1fe</a> · <a href="https://x.com/codexchiyunni" target="_blank" class="hover:text-brandPurple transition">@codexchiyunni</a>
         <span class="bounce-loop inline-block ml-1">🌸</span>
     </div>
 </main>
